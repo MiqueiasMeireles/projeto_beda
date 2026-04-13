@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Hospital App</title>
+  <meta name="description" content="App de pré-atendimento hospitalar">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Fonte moderna -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <!-- manifest.json -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#B91928">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- LOADING INICIAL -->
+  <div id="loading">
+    <div class="loader"></div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-content">
+      <h1>Hospital</h1>
+      <span class="subtitle">Pré-atendimento digital</span>
+    </div>
+  </header>
+
+  <!-- CONTEÚDO -->
+  <main id="app">
+
+    <!-- HOME -->
+    <section class="screen active" id="home">
+      <h2 class="title">O que você precisa?</h2>
+
+      <div class="card highlight" onclick="navigate('agendamento')">
+        <h3>Agendar Consulta</h3>
+        <p>Rápido e sem complicação</p>
+      </div>
+
+      <div class="grid">
+        <div class="card" onclick="navigate('exames')">
+          <h3>Exames</h3>
+          <p>Preparo e informações</p>
+        </div>
+
+        <div class="card" onclick="navigate('consultas')">
+          <h3>Consultas</h3>
+          <p>Seus agendamentos</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXAMES -->
+    <section class="screen" id="exames">
+      <h2>Exames</h2>
+      <div id="listaExames"></div>
+    </section>
+
+    <!-- AGENDAMENTO -->
+    <section class="screen" id="agendamento">
+      <h2>Agendar</h2>
+
+      <label>Especialidade</label>
+      <select id="especialidade">
+        <option>Clínico Geral</option>
+        <option>Cardiologia</option>
+        <option>Ortopedia</option>
+      </select>
+
+      <label>Data</label>
+      <input type="date" id="data">
+
+      <label>Horários disponíveis</label>
+      <div id="horarios"></div>
+
+      <button onclick="agendar()">Confirmar</button>
+    </section>
+
+    <!-- CONSULTAS -->
+    <section class="screen" id="consultas">
+      <h2>Minhas Consultas</h2>
+      <div id="listaConsultas"></div>
+    </section>
+
+  </main>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-item" onclick="navigate('home')">
+      <span>🏠</span>
+      <p>Home</p>
+    </div>
+
+    <div class="nav-item" onclick="navigate('exames')">
+      <span>🧪</span>
+      <p>Exames</p>
+    </div>
+
+    <div class="nav-item" onclick="navigate('consultas')">
+      <span>📅</span>
+      <p>Consultas</p>
+    </div>
+  </nav>
+  
+  <div id="toast"></div>
+  
+  <script src="script.js"></script>
+</body>
+
+</html>
