@@ -31,17 +31,32 @@ const exames = [
   {
     nome: "Hemograma",
     preparo: "Jejum de 8 horas",
-    detalhes: "Coleta de sangue para análise completa"
+    detalhes: "Coleta de sangue para análise completa, incluindo glóbulos vermelhos, brancos e plaquetas. Importante para diagnóstico de anemia, infecções e outras condições hematológicas."
   },
   {
     nome: "Raio-X",
     preparo: "Sem preparo necessário",
-    detalhes: "Imagem para avaliação óssea"
+    detalhes: "Imagem para avaliação óssea, pulmonar e outras estruturas. Útil para diagnóstico de fraturas, infecções e outras condições."
   },
   {
     nome: "Ultrassonografia",
     preparo: "Beber água antes",
-    detalhes: "Avaliação por imagem em tempo real"
+    detalhes: "Avaliação por imagem em tempo real, útil para órgãos abdominais e pélvicos. Pode ser necessário jejum ou bexiga cheia dependendo da área a ser examinada."
+  },
+  {
+    nome: "Eletrocardiograma",
+    preparo: "Sem preparo necessário",
+    detalhes: "Registro da atividade elétrica do coração, útil para diagnóstico de arritmias e outras condições cardíacas. Recomenda-se evitar cafeína e exercícios antes do exame."
+  },
+  {
+    nome: "Teste de glicemia",
+    preparo: "Jejum de 8 horas",
+    detalhes: "Medida do nível de açúcar no sangue, importante para diagnóstico e monitoramento de diabetes. Requer jejum para resultados precisos, evitando alimentos e bebidas que possam alterar os níveis de glicose." 
+  },
+  {
+    nome: "Exame de urina",
+    preparo: "Coletar primeira urina da manhã",
+    detalhes: "Análise da urina para detectar infecções, doenças renais e outras condições. A coleta deve ser feita com a primeira urina do dia para garantir maior concentração de substâncias a serem analisadas."
   }
 ];
 

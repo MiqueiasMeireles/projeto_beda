@@ -34,6 +34,7 @@ body {
 }
 
 .loader {
+  display: block;
   width: 40px;
   height: 40px;
   border: 4px solid white;
@@ -46,6 +47,19 @@ body {
   100% {
     transform: rotate(360deg);
   }
+}
+
+.logo-loading {
+  display: block;
+  width: 280px;
+  margin-bottom: 5px;
+}
+
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Títulos mais fortes */
@@ -79,6 +93,7 @@ h3 {
 /* MAIN */
 main {
   flex: 1;
+  overflow-x: hidden;
   padding: 20px 15px;
   padding-bottom: 120px;
 }
@@ -254,13 +269,18 @@ button:hover {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
+  padding: 5px;
   margin-top: 15px;
   
+
   max-height: 180px;
   overflow-y: auto;
 }
 
 .horario-btn {
+  width: auto;
+  box-sizing: border-box;
+  overflow-x: hidden;
   margin-top: 0;
   padding: 10px;
   font-size: 14px;
@@ -271,7 +291,7 @@ button:hover {
 .horario-btn.selected {
   background: #B91928;
   color: white;
-  transform: scale(1.02);
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,0.3);
 }
 
 #toast.show {
