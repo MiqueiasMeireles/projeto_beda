@@ -24,6 +24,62 @@ function navigate(screenId) {
   if (screenId === "consultas") {
     carregarConsultas();
   }
+
+  if (screenId === "perfil") {
+  carregarPerfil();
+}
+}
+
+// DADOS DO PERFIL (simulação)
+let perfil = {
+  nome: "João da Silva",
+  cpf: "123.456.789-00",
+  nascimento: "01/01/1990",
+  telefone: "(22) 99999-9999",
+  convenio: "Ases",
+  numero: "000123456",
+  status: "Ativo"
+};
+
+function carregarPerfil() {
+  document.getElementById("perfilNome").textContent = perfil.nome;
+  document.getElementById("perfilCpf").textContent = perfil.cpf;
+  document.getElementById("perfilNascimento").textContent = perfil.nascimento;
+  document.getElementById("perfilTelefone").textContent = perfil.telefone;
+  document.getElementById("perfilConvenio").textContent = perfil.convenio;
+  document.getElementById("perfilNumero").textContent = perfil.numero;
+
+  document.querySelector(".convenio").textContent = perfil.convenio;
+  document.querySelector(".status").textContent = perfil.status;
+}
+
+function editarPerfil() {
+  const nome = prompt("Nome:", perfil.nome);
+  const telefone = prompt("Telefone:", perfil.telefone);
+  const convenio = prompt("Convenio:", perfil.convenio);
+
+  if (nome) perfil.nome = nome;
+  if (telefone) perfil.telefone = telefone;
+  if (convenio) perfil.convenio = convenio;
+
+  carregarPerfil();
+  showToast("Perfil atualizado");
+}
+
+// QR CODE
+function gerarQR() {
+  const container = document.getElementById("qrcode");
+  container.innerHTML = "";
+
+  const dados = `${perfil.numero}|${Date.now()}`;
+
+  new QRCode(container, {
+    text: dados,
+    width: 160,
+    height: 160
+  });
+
+  showToast("QR Code gerado");
 }
 
 // DADOS MOCKADOS (simulação)

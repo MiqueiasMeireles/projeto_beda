@@ -38,26 +38,31 @@
   <main id="app">
 
     <!-- HOME -->
-    <section class="screen active" id="home">
-      <h2 class="title">O que você precisa?</h2>
+<section class="screen active" id="home">
+  <h2 class="title">O que você precisa?</h2>
 
-      <div class="card highlight" onclick="navigate('agendamento')">
-        <h3>Agendar Consulta</h3>
-        <p>Rápido e sem complicação</p>
-      </div>
+  <div class="card highlight" onclick="navigate('agendamento')">
+    <h3>Agendar Consulta</h3>
+    <p>Rápido e sem complicação</p>
+  </div>
 
-      <div class="grid">
-        <div class="card" onclick="navigate('exames')">
-          <h3>Exames</h3>
-          <p>Preparo e informações</p>
-        </div>
+  <div class="grid">
+    <div class="card" onclick="navigate('perfil')">
+      <h3>Perfil</h3>
+      <p>Seus dados</p>
+    </div>
 
-        <div class="card" onclick="navigate('consultas')">
-          <h3>Consultas</h3>
-          <p>Seus agendamentos</p>
-        </div>
-      </div>
-    </section>
+    <div class="card" onclick="navigate('exames')">
+      <h3>Exames</h3>
+      <p>Preparo e informações</p>
+    </div>
+
+    <div class="card" onclick="navigate('consultas')">
+      <h3>Consultas</h3>
+      <p>Seus agendamentos</p>
+    </div>
+  </div>
+</section>
     
     <!-- EXAMES -->
     <section class="screen" id="exames">
@@ -95,6 +100,53 @@
       <div id="listaConsultas"></div>
     </section>
 
+    <section class="screen" id="perfil">
+      <h2>Meu Perfil</h2>
+
+      <!-- CARTEIRINHA -->
+      <div class="carteirinha">
+        <div class="carteirinha-topo">
+          <span class="convenio">Unimed</span>
+          <span class="status">Ativo</span>
+        </div>
+
+        <div class="carteirinha-nome" id="perfilNome"></div>
+
+        <div class="carteirinha-info">
+          <p>CPF: <span id="perfilCpf"></span></p>
+          <p>Nascimento: <span id="perfilNascimento"></span></p>
+        </div>
+
+        <div class="carteirinha-footer">
+          Nº: <span id="perfilNumero"></span>
+        </div>
+      </div>
+
+      <!-- QR CODE -->
+      <div class="card">
+        <h3>Check-in rápido</h3>
+        <p>Apresente este código na recepção</p>
+
+        <div id="qrcode"></div>
+
+        <button onclick="gerarQR()">Gerar QR Code</button>
+      </div>
+
+      <!-- DADOS -->
+      <div class="card">
+        <div class="perfil-dados">
+          <div>
+            <span>Telefone</span>
+            <strong id="perfilTelefone"></strong>
+          </div>
+
+          <div>
+            <span>Convênio</span>
+            <strong id="perfilConvenio"></strong>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <!-- NAVBAR -->
@@ -102,6 +154,11 @@
     <div class="nav-item" onclick="navigate('home')">
       <span>🏠</span>
       <p>Início</p>
+    </div>
+    
+    <div class="nav-item" onclick="navigate('perfil')">
+      <span>👤</span>
+      <p>Perfil</p>
     </div>
 
     <div class="nav-item" onclick="navigate('exames')">
@@ -114,9 +171,14 @@
       <p>Consultas</p>
     </div>
   </nav>
-  
+
+  <!-- TOAST -->
   <div id="toast"></div>
+
+  <!-- QR CODE -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
   
+  <!-- JAVA SCRIPT -->
   <script src="script.js"></script>
 </body>
 
