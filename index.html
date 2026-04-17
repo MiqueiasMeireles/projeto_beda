@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>App Version 13.4.01</title>
+  <title>App Version 17.4.01</title>
   <meta name="description" content="App de pré-atendimento hospitalar">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -117,6 +117,11 @@
           <p>Nascimento: <span id="perfilNascimento"></span></p>
         </div>
 
+        <div class="carteirinha-extra">
+          <p>Telefone: <span id="perfilTelefone"></span></p>
+          <p>Convênio: <span id="perfilConvenio"></span></p>
+        </div>
+
         <div class="carteirinha-footer">
           Nº: <span id="perfilNumero"></span>
         </div>
@@ -127,53 +132,43 @@
         <h3>Check-in rápido</h3>
         <p>Apresente este código na recepção</p>
 
+      <div class="qr-container">
         <div id="qrcode"></div>
+      </div>
 
         <button onclick="gerarQR()">Gerar QR Code</button>
       </div>
-
-      <!-- DADOS -->
-      <div class="card">
-        <div class="perfil-dados">
-          <div>
-            <span>Telefone</span>
-            <strong id="perfilTelefone"></strong>
-          </div>
-
-          <div>
-            <span>Convênio</span>
-            <strong id="perfilConvenio"></strong>
-          </div>
-        </div>
-      </div>
     </section>
-  </main>
+  </main> 
 
   <!-- NAVBAR -->
   <nav class="navbar">
     <div class="nav-item" onclick="navigate('home')">
-      <span>🏠</span>
+      <i data-lucide="home"></i>
       <p>Início</p>
     </div>
     
     <div class="nav-item" onclick="navigate('perfil')">
-      <span>👤</span>
+      <i data-lucide="user"></i>
       <p>Perfil</p>
     </div>
 
     <div class="nav-item" onclick="navigate('exames')">
-      <span>🧪</span>
+      <i data-lucide="activity"></i>
       <p>Exames</p>
     </div>
 
     <div class="nav-item" onclick="navigate('consultas')">
-      <span>📅</span>
+      <i data-lucide="calendar"></i>
       <p>Consultas</p>
     </div>
   </nav>
 
   <!-- TOAST -->
   <div id="toast"></div>
+
+<!-- ÍCONES NAVBAR -->
+<script src="https://unpkg.com/lucide@latest"></script>
 
   <!-- QR CODE -->
   <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>

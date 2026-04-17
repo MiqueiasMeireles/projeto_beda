@@ -67,19 +67,29 @@ function editarPerfil() {
 }
 
 // QR CODE
+let qrAtivo = false;
+
 function gerarQR() {
   const container = document.getElementById("qrcode");
+
+  if (qrAtivo) {
+    showToast("QR já gerado");
+    return;
+  }
+
   container.innerHTML = "";
 
   const dados = `${perfil.numero}|${Date.now()}`;
 
   new QRCode(container, {
     text: dados,
-    width: 160,
-    height: 160
+    width: 130,
+    height: 130
   });
 
-  showToast("QR Code gerado");
+  qrAtivo = true;
+
+  showToast("QR pronto para uso");
 }
 
 // DADOS MOCKADOS (simulação)
@@ -267,8 +277,5 @@ carregarExames();
 carregarConsultas();
 gerarHorarios();
 
-//SERVICE WORKER
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("service-worker.js")
-    .then(() => console.log("Service Worker registrado"));
-}
+// ÍCONES NAVBAR
+lucide.createIcons();

@@ -217,16 +217,43 @@ button:focus {
 
 .status {
   background: rgba(255,255,255,0.2);
-  padding: 3px 8px;
-  border-radius: 8px;
-  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+.carteirinha-extra {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255,255,255,0.2);
+}
+
+.carteirinha-extra p {
+  font-size: 13px;
+  margin-bottom: 4px;
+  opacity: 0.85;
 }
 
 /* QR CODE */
+
+.qr-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: #f8f8f8;
+  padding: 18px;
+  border-radius: 14px;
+
+  margin: 18px 0;
+
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
 #qrcode {
   display: flex;
   justify-content: center;
-  margin: 20px 0;
+  margin: 0;
 }
 
 .card h3 {
@@ -239,7 +266,14 @@ button:focus {
 }
 
 .card button {
-  margin-top: 10px;
+  border: 2px solid #B91928;
+  background: transparent;
+  color: #B91928;
+}
+
+.card button:hover {
+  background: #B91928;
+  color: white;
 }
 
 #qrcode canvas {
@@ -296,16 +330,18 @@ button:hover {
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 65px;
+  height: 70px;
 
   display: flex;
   justify-content: space-around;
   align-items: center;
 
-  background: white;
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
 
-  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.06);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.08);
+
   z-index: 1000;
 }
 
@@ -316,19 +352,34 @@ button:hover {
   align-items: center;
   justify-content: center;
 
-  font-size: 12px;
-  color: #635e5e;
-  cursor: pointer;
-}
+  font-size: 11px;
+  color: #777;
 
-.nav-item span {
-  font-size: 18px;
-  margin-bottom: 2px;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .nav-item.active {
   color: #B91928;
   font-weight: 600;
+  position: relative;
+}
+
+.nav-item.active i {
+  stroke-width: 2.5;
+}
+
+
+.nav-item.active::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+
+  width: 6px;
+  height: 6px;
+
+  background: #B91928;
+  border-radius: 50%;
 }
 
 /* MENSAGEM AO ADICIONAR CONSULTA */
