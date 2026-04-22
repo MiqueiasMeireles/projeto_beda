@@ -51,7 +51,7 @@ body {
 
 .logo-loading {
   display: block;
-  width: 280px;
+  width: 200px;
   margin-bottom: 5px;
 }
 
@@ -90,6 +90,50 @@ h3 {
   opacity: 0.8;
 }
 
+/* BANER DE CONFIRMAÇÃO */
+.notificacao {
+  position: fixed;
+  top: 80px;
+  /* abaixo do header */
+  left: 50%;
+  transform: translateX(-50%) translateY(-20px);
+
+  width: 90%;
+  max-width: 400px;
+
+  background: white;
+  padding: 15px;
+  border-radius: 14px;
+
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+
+  z-index: 1200;
+
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.notificacao.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.notif-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.notif-actions button {
+  flex: 1;
+  padding: 10px;
+}
+
+.btn-sec {
+  background: #eee;
+  color: #333;
+}
+
 /* MAIN */
 main {
   flex: 1;
@@ -116,14 +160,18 @@ main {
   gap: 10px;
 }
 
-.grid .card:nth-child(3) {
-  grid-column: 1 / -1;
-}
-
 /* TELAS */
 .screen {
   display: none;
-  animation: fade 0.2s ease;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.25s ease;
+}
+
+.screen.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 @keyframes fade {
@@ -138,13 +186,8 @@ main {
   }
 }
 
-.screen.active {
-  display: block;
-}
-
 /* CARDS */
 .card {
-  all: unset;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -168,6 +211,12 @@ main {
   transform: scale(0.98);
 }
 
+.card:active,
+button:active,
+.nav-item:active {
+  transform: scale(0.95);
+}
+
 button:focus {
   outline: 2px solid #B91928;
   outline-offset: 2px;
@@ -182,8 +231,9 @@ button:focus {
 .carteirinha {
   background: linear-gradient(135deg, #B91928, #7a0f19);
   color: white;
-  padding: 20px;
   border-radius: 16px;
+  max-height: 420px;
+  padding: 16px 18px;
   margin-top: 10px;
   margin-bottom: 20px;
   box-shadow: 0 10px 25px rgba(185, 25, 40, 0.3);
@@ -192,62 +242,58 @@ button:focus {
 .carteirinha-topo {
   display: flex;
   justify-content: space-between;
-  font-size: 12px;
+  font-size: 11px;
   opacity: 0.9;
+}
+
+.status {
+  background: rgba(255,255,255,0.2);
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 11px;
 }
 
 .carteirinha-nome {
   font-size: 20px;
   font-weight: 700;
-  margin: 12px 0;
+  margin: 8px 0;
 }
 
-.carteirinha-info p {
+.carteirinha-info p, .carteirinha-extra p {
   font-size: 12px;
   opacity: 0.85;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
+  line-height: 1.3;
+}
+
+.carteirinha-extra {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255,255,255,0.2);
 }
 
 .carteirinha-footer {
   text-align: right;
-  margin-top: 10px;
-  font-size: 12px;
+  margin-top: 6px;
+  font-size: 11px;
   opacity: 0.8;
 }
 
-.status {
-  background: rgba(255,255,255,0.2);
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-size: 12px;
-}
-
-.carteirinha-extra {
-  margin-top: 12px;
-  padding-top: 10px;
-  border-top: 1px solid rgba(255,255,255,0.2);
-}
-
-.carteirinha-extra p {
-  font-size: 13px;
-  margin-bottom: 4px;
-  opacity: 0.85;
-}
-
 /* QR CODE */
-
 .qr-container {
   display: flex;
   justify-content: center;
   align-items: center;
 
   background: #f8f8f8;
-  padding: 18px;
+  padding: 16px;
   border-radius: 14px;
 
   margin: 18px 0;
 
-  border: 1px solid rgba(0,0,0,0.05);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+
+  overflow: hidden;
 }
 
 #qrcode {
@@ -277,9 +323,26 @@ button:focus {
 }
 
 #qrcode canvas {
+  animation: qrFade 0.3s ease;
   border-radius: 10px;
-  padding: 5px;
+  padding: 6px;
   background: white;
+  }
+
+@keyframes qrFade {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 /* FORM */
@@ -320,8 +383,35 @@ button:active {
   transform: scale(0.97);
 }
 
-button:hover {
-  opacity: 0.9;
+/* BOTÃO FAB */
+.fab {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(135deg, #B91928, #8f1420);
+  color: white;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  z-index: 1100;
+  transition: all 0.2s ease;
+}
+
+.fab:hover {
+  transform: translateY(-2px);
+}
+
+.fab:active {
+  transform: scale(0.92);
 }
 
 /* NAVBAR */
@@ -363,6 +453,7 @@ button:hover {
   color: #B91928;
   font-weight: 600;
   position: relative;
+  transform: translateY(-4px);
 }
 
 .nav-item.active i {
@@ -454,9 +545,38 @@ button:hover {
   opacity: 0.6;
 }
 
-/* BOTÃO EDITAR PERFIL */
-#perfil button {
-  background: transparent;
-  color: #B91928;
+/* BOTÃO VER RESULTADOS */
+.btn-resultados {
+  margin-top: 5px;
+  margin-bottom: 10px;
+
+  background-color: #B91928;
+  color: white;
+  font-size: 15px;
+  padding: 10px;
+  border-radius: 10px;
   border: 2px solid #B91928;
+}
+
+button:focus {
+  outline: 2px solid #B91928;
+  outline-offset: 3px;
+}
+
+/* BOTÃO AGENDAR NOVA CONSULTA */
+.btn-agendar {
+  margin-top: 15px;
+  margin-bottom: 10px;
+  width: 100%;
+
+  background-color: #B91928;
+  color: white;
+  border: 2px solid #B91928;
+}
+
+.btn-agendar:hover {
+  background: #B91928;
+  color: white;
+  outline: 2px solid #B91928;
+  outline-offset: 3px;
 }

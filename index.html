@@ -34,6 +34,18 @@
     </div>
   </header>
 
+  <!-- BANER DE CONFIRMAÇÃO -->
+  <div id="notificacao" class="notificacao hidden">
+    <div class="notif-content">
+      <p id="notif-text"></p>
+  
+      <div class="notif-actions">
+        <button onclick="confirmarConsultaAtual()">Confirmar</button>
+        <button class="btn-sec" onclick="fecharNotificacao()">Agora não</button>
+      </div>
+    </div>
+  </div>
+
   <!-- CONTEÚDO -->
   <main id="app">
 
@@ -57,6 +69,11 @@
       <p>Preparo e informações</p>
     </div>
 
+    <div class="card" onclick="navigate('resultados')">
+      <h3>Resultados</h3>
+      <p>Seus exames disponíveis</p>
+    </div>    
+
     <div class="card" onclick="navigate('consultas')">
       <h3>Consultas</h3>
       <p>Seus agendamentos</p>
@@ -67,7 +84,15 @@
     <!-- EXAMES -->
     <section class="screen" id="exames">
       <h2>Exames</h2>
+      <button class="btn-resultados" onclick="navigate('resultados')">
+        Ver meus resultados
+      </button>
       <div id="listaExames"></div>
+    </section>
+
+    <section class="screen" id="resultados">
+      <h2>Resultados de Exames</h2>
+      <div id="listaResultados"></div>
     </section>
 
     <!-- AGENDAMENTO -->
@@ -99,6 +124,7 @@
       <h2>Minhas Consultas</h2>
       <div id="listaConsultas"></div>
     </section>
+
 
     <section class="screen" id="perfil">
       <h2>Meu Perfil</h2>
@@ -136,10 +162,14 @@
         <div id="qrcode"></div>
       </div>
 
-        <button onclick="gerarQR()">Gerar QR Code</button>
+        <button onclick="gerarQR(this)">Gerar QR Code</button>
       </div>
     </section>
   </main> 
+
+  <button id="fab" class="fab" onclick="navigate('agendamento')">
+    <i data-lucide="plus"></i>
+  </button>
 
   <!-- NAVBAR -->
   <nav class="navbar">

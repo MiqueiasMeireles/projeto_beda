@@ -1,9 +1,21 @@
-// FUNÇÃO LOADING
+// FUNÇÃO LOADING INICIAL
 window.onload = () => {
   setTimeout(() => {
     document.getElementById("loading").style.display = "none";
   }, 950);
 };
+
+// FUNÇÃO LOADING BOTÕES
+function setLoading(button, text = "Carregando...") {
+  button.dataset.original = button.textContent;
+  button.textContent = text;
+  button.disabled = true;
+}
+
+function resetButton(button, text = null) {
+  button.textContent = text || button.dataset.original;
+  button.disabled = false;
+}
 
 // NAVEGAÇÃO ENTRE TELAS
 function navigate(screenId) {
@@ -13,7 +25,7 @@ function navigate(screenId) {
 
   document.getElementById(screenId).classList.add('active');
 
-  // 🔥 ATUALIZA NAVBAR
+  // ATUALIZAR NAVBAR
   document.querySelectorAll('.nav-item').forEach(item => {
     item.classList.remove('active');
   });
@@ -27,7 +39,20 @@ function navigate(screenId) {
 
   if (screenId === "perfil") {
   carregarPerfil();
-}
+  }
+
+  if (screenId === "resultados") {
+    carregarResultados();
+  }
+  const fab = document.getElementById("fab");
+  const hideFabScreens = ["agendamento","consultas"];
+
+  if (hideFabScreens.includes(screenId)) {
+    fab.style.display = "none";
+  } else {
+    fab.style.display = "flex";
+  }
+
 }
 
 // DADOS DO PERFIL (simulação)
@@ -51,6 +76,9 @@ function carregarPerfil() {
 
   document.querySelector(".convenio").textContent = perfil.convenio;
   document.querySelector(".status").textContent = perfil.status;
+
+  qrAtivo = false;
+  document.getElementById("qrcode").innerHTML = "";
 }
 
 function editarPerfil() {
@@ -69,7 +97,8 @@ function editarPerfil() {
 // QR CODE
 let qrAtivo = false;
 
-function gerarQR() {
+// ⚠️ AJUSTAR gerarQR()
+function gerarQR(button) {
   const container = document.getElementById("qrcode");
 
   if (qrAtivo) {
@@ -77,19 +106,24 @@ function gerarQR() {
     return;
   }
 
-  container.innerHTML = "";
+  setLoading(button, "Gerando...");
 
-  const dados = `${perfil.numero}|${Date.now()}`;
+  setTimeout(() => {
+    container.innerHTML = "";
 
-  new QRCode(container, {
-    text: dados,
-    width: 130,
-    height: 130
-  });
+    const dados = `${perfil.numero}|${Date.now()}`;
 
-  qrAtivo = true;
+    new QRCode(container, {
+      text: dados,
+      width: 180,
+      height: 180
+    });
 
-  showToast("QR pronto para uso");
+    qrAtivo = true;
+
+    resetButton(button, "QR pronto");
+    showToast("QR pronto para uso");
+  }, 600);
 }
 
 // DADOS MOCKADOS (simulação)
@@ -97,12 +131,18 @@ const exames = [
   {
     nome: "Hemograma",
     preparo: "Jejum de 8 horas",
-    detalhes: "Coleta de sangue para análise completa, incluindo glóbulos vermelhos, brancos e plaquetas. Importante para diagnóstico de anemia, infecções e outras condições hematológicas."
+    detalhes: "Coleta de sangue para análise completa, incluindo glóbulos vermelhos, brancos e plaquetas. Importante para diagnóstico de anemia, infecções e outras condições hematológicas.",
+    data: "10/04/2026",
+    status: "disponivel",
+    resultado: "resultados/hemograma.pdf"
   },
   {
     nome: "Raio-X",
     preparo: "Sem preparo necessário",
-    detalhes: "Imagem para avaliação óssea, pulmonar e outras estruturas. Útil para diagnóstico de fraturas, infecções e outras condições."
+    detalhes: "Imagem para avaliação óssea, pulmonar e outras estruturas. Útil para diagnóstico de fraturas, infecções e outras condições.",
+    data: "12/04/2026",
+    status: "analise",
+    resultado: null
   },
   {
     nome: "Ultrassonografia",
@@ -126,6 +166,19 @@ const exames = [
   }
 ];
 
+const resultados = [
+  {
+    nome: "Hemograma",
+    data: "2026-04-10",
+    status: "Disponível"
+  },
+  {
+    nome: "Raio-X",
+    data: "2026-04-12",
+    status: "Em análise"
+  }
+];
+
 // CARREGAR EXAMES
 function carregarExames() {
   const container = document.getElementById("listaExames");
@@ -141,13 +194,56 @@ function carregarExames() {
       <div id="detalhe-${index}" class="detalhe hidden">
         <p>${exame.detalhes}</p>
       </div>
-      <button onclick="toggleDetalhe(${index})">
-        Ver mais
-      </button>
+    <button onclick="event.stopPropagation(); toggleDetalhe(${index})">
+      Ver mais
+    </button>
     `;
 
     container.appendChild(div);
   });
+}
+
+// CARREGAR RESULTADOS
+function carregarResultados() {
+  const container = document.getElementById("listaResultados");
+  container.innerHTML = "";
+
+  exames
+    .filter(exame => exame.status === "disponivel" || exame.status === "analise")
+    .forEach(exame => {
+
+      const div = document.createElement("div");
+      div.classList.add("card");
+
+      const disponivel = exame.status === "disponivel";
+
+      div.innerHTML = `
+        <h3>${exame.nome}</h3>
+        <p>${exame.data || ""}</p>
+        <p>Status: ${disponivel ? "Disponível" : "Em análise"}</p>
+
+        <button 
+          onclick="abrirResultado('${exame.resultado}')"
+          ${!disponivel ? "disabled" : ""}
+        >
+          ${disponivel ? "Visualizar" : "Indisponível"}
+        </button>
+      `;
+
+      container.appendChild(div);
+    });
+}
+function abrirResultado(url) {
+  if (!url) {
+    showToast("Resultado indisponível");
+    return;
+  }
+
+  showToast("Abrindo resultado...");
+
+  setTimeout(() => {
+    window.open(url, "_blank");
+  }, 400);
 }
 
 // DETALHE
@@ -197,6 +293,8 @@ function gerarHorarios() {
 
 // AGENDAMENTO
 function agendar() {
+  const button = event.target;
+
   const especialidade = document.getElementById("especialidade").value;
   const data = document.getElementById("data").value;
   const hora = horarioSelecionado;
@@ -206,19 +304,86 @@ function agendar() {
     return;
   }
 
-  showToast("Processando...");
+  setLoading(button, "Processando...");
 
   setTimeout(() => {
-    const consulta = { especialidade, data, hora };
+    const consulta = {
+      especialidade,
+      data,
+      hora,
+      confirmada: false
+    };
 
     let consultas = JSON.parse(localStorage.getItem("consultas")) || [];
     consultas.push(consulta);
     localStorage.setItem("consultas", JSON.stringify(consultas));
 
+    resetButton(button, "Confirmado");
     showToast("Agendamento confirmado!");
 
     navigate("consultas");
   }, 1000);
+}
+
+let consultaNotificadaIndex = null;
+
+// NOTIFICAÇÃO DAS CONSULTAS 
+function verificarConsultasProximas() {
+  let consultas = JSON.parse(localStorage.getItem("consultas")) || [];
+
+  const agora = new Date();
+
+  consultas.forEach((c, index) => {
+    const dataHora = new Date(`${c.data}T${c.hora}`);
+
+    const diff = dataHora - agora;
+    const minutos = diff / 1000 / 60;
+
+    if (minutos > 0 && minutos <= 60 && !c.confirmada && consultaNotificadaIndex === null) {
+      notificarConsulta(index, c);
+    }
+  });
+}
+
+function notificarConsulta(index, consulta) {
+  consultaNotificadaIndex = index;
+
+  const box = document.getElementById("notificacao");
+  const text = document.getElementById("notif-text");
+
+  text.textContent = `Consulta de ${consulta.especialidade} às ${consulta.hora}`;
+
+  box.classList.remove("hidden");
+  setTimeout(() => box.classList.add("show"), 10);
+}
+
+function confirmarConsulta(index) {
+  let consultas = JSON.parse(localStorage.getItem("consultas")) || [];
+
+  consultas[index].confirmada = true;
+
+  localStorage.setItem("consultas", JSON.stringify(consultas));
+
+  showToast("Consulta confirmada");
+}
+
+function confirmarConsultaAtual() {
+  if (consultaNotificadaIndex === null) return;
+
+  confirmarConsulta(consultaNotificadaIndex);
+  fecharNotificacao();
+}
+
+function fecharNotificacao() {
+  const box = document.getElementById("notificacao");
+
+  box.classList.remove("show");
+
+  setTimeout(() => {
+    box.classList.add("hidden");
+  }, 300);
+
+  consultaNotificadaIndex = null;
 }
 
 // FORMATAR DATA
@@ -238,10 +403,20 @@ function carregarConsultas() {
     container.innerHTML = `
       <div class="empty">
         <p>Você ainda não tem consultas</p>
+        <button onclick="navigate('agendamento')">
+          Agendar agora
+        </button>
       </div>
     `;
     return;
   }
+
+  const btn = document.createElement("button");
+  btn.textContent = "Agendar nova consulta";
+  btn.classList.add("btn-agendar");
+  btn.onclick = () => navigate("agendamento");
+
+  container.appendChild(btn);
 
   consultas.forEach((c, index) => {
     const div = document.createElement("div");
@@ -279,3 +454,7 @@ gerarHorarios();
 
 // ÍCONES NAVBAR
 lucide.createIcons();
+setTimeout(() => lucide.createIcons(), 0);
+
+//VERIFICAÇÃO AUTOMÁTICA DE CONSULTAS PRÓXIMAS
+setInterval(verificarConsultasProximas, 60000); // a cada 1 min
