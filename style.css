@@ -90,6 +90,90 @@ h3 {
   opacity: 0.8;
 }
 
+/* AVALIAÇÃO APP */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(0,0,0,0.25);
+  backdrop-filter: blur(6px);
+
+  z-index: 2000;
+
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.modal.show {
+  opacity: 1;
+}
+
+.modal.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.modal.show .modal-content {
+  opacity: 1;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 18px;
+  width: 90%;
+  max-width: 320px;
+
+  text-align: center;
+
+  transform: scale(0.9);
+  opacity: 0;
+
+  transition: all 0.25s ease;
+}
+
+.modal.show .modal-content {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.stars {
+  margin: 15px 0;
+}
+
+.stars span {
+  font-size: 28px;
+  cursor: pointer;
+  color: #ccc;
+  transition: transform 0.15s ease, color 0.2s;
+}
+
+.stars span.active {
+  color: #B91928;
+  transform: scale(1.2);
+}
+
+.stars span:hover {
+  transform: scale(1.25);
+}
+
+textarea {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  resize: none;
+  height: 70px;
+}
+
 /* BANER DE CONFIRMAÇÃO */
 .notificacao {
   position: fixed;
@@ -542,7 +626,7 @@ button:active {
 .empty {
   text-align: center;
   margin-top: 40px;
-  opacity: 0.6;
+  p {opacity: 0.6;}
 }
 
 /* BOTÃO VER RESULTADOS */

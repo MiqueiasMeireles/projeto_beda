@@ -12,6 +12,73 @@ function setLoading(button, text = "Carregando...") {
   button.disabled = true;
 }
 
+//// CONTROLE DAS ESTRELAS
+let notaSelecionada = 0;
+
+document.querySelectorAll(".stars span").forEach(star => {
+  star.addEventListener("click", () => {
+    notaSelecionada = star.dataset.star;
+
+    document.querySelectorAll(".stars span").forEach(s => {
+      s.classList.remove("active");
+    });
+
+    for (let i = 0; i < notaSelecionada; i++) {
+      document.querySelectorAll(".stars span")[i].classList.add("active");
+    }
+  });
+});
+function enviarAvaliacao() {
+  const comentario = document.getElementById("comentario").value;
+
+  if (notaSelecionada === 0) {
+    showToast("Selecione uma nota");
+    return;
+  }
+
+  const avaliacao = {
+    nota: notaSelecionada,
+    comentario: comentario,
+    data: new Date().toISOString()
+  };
+
+  let avaliacoes = JSON.parse(localStorage.getItem("avaliacoes")) || [];
+  avaliacoes.push(avaliacao);
+
+  localStorage.setItem("avaliacoes", JSON.stringify(avaliacoes));
+
+  localStorage.setItem("avaliou", "true");
+
+  fecharModalAvaliacao();
+  showToast("Obrigado pelo feedback!");
+}
+function abrirModalAvaliacao() {
+  if (localStorage.getItem("avaliou")) return;
+
+  const modal = document.getElementById("avaliacao-modal");
+
+  modal.classList.remove("hidden");
+
+  requestAnimationFrame(() => {
+    modal.classList.add("show");
+  });
+}
+
+function fecharModalAvaliacao() {
+  const modal = document.getElementById("avaliacao-modal");
+
+  modal.classList.remove("show");
+
+  setTimeout(() => {
+    modal.classList.add("hidden");
+  }, 250);
+}
+function abrirModalAvaliacao() {
+  if (localStorage.getItem("avaliou")) return;
+
+  document.getElementById("avaliacao-modal").classList.remove("hidden");
+}
+
 function resetButton(button, text = null) {
   button.textContent = text || button.dataset.original;
   button.disabled = false;
@@ -322,6 +389,11 @@ function agendar() {
     showToast("Agendamento confirmado!");
 
     navigate("consultas");
+
+    if (consultas.length >= 2) {
+    abrirModalAvaliacao();
+    } 
+
   }, 1000);
 }
 
