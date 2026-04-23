@@ -51,6 +51,11 @@ function enviarAvaliacao() {
   if ("vibrate" in navigator) {
     navigator.vibrate([20, 40, 20]);
   }
+  document.body.onclick = () => {
+    if ("vibrate" in navigator) {
+      navigator.vibrate(100);
+    }
+  };
 
   fecharModalAvaliacao();
   showToast("Obrigado pelo feedback!");
