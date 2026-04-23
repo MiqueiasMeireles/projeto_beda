@@ -46,8 +46,11 @@ function enviarAvaliacao() {
   avaliacoes.push(avaliacao);
 
   localStorage.setItem("avaliacoes", JSON.stringify(avaliacoes));
-
   localStorage.setItem("avaliou", "true");
+
+  if ("vibrate" in navigator) {
+    navigator.vibrate([20, 40, 20]);
+  }
 
   fecharModalAvaliacao();
   showToast("Obrigado pelo feedback!");
@@ -60,23 +63,18 @@ function abrirModalAvaliacao() {
   modal.classList.remove("hidden");
 
   requestAnimationFrame(() => {
-    modal.classList.add("show");
+    modal.classList.add("active");
   });
 }
 
 function fecharModalAvaliacao() {
   const modal = document.getElementById("avaliacao-modal");
 
-  modal.classList.remove("show");
+  modal.classList.remove("active");
 
   setTimeout(() => {
     modal.classList.add("hidden");
   }, 250);
-}
-function abrirModalAvaliacao() {
-  if (localStorage.getItem("avaliou")) return;
-
-  document.getElementById("avaliacao-modal").classList.remove("hidden");
 }
 
 function resetButton(button, text = null) {
@@ -390,10 +388,11 @@ function agendar() {
 
     navigate("consultas");
 
-    if (consultas.length >= 2) {
-    abrirModalAvaliacao();
+    if (consultas.length === 2 && !localStorage.getItem("avaliou")) {
+      setTimeout(() => {
+        abrirModalAvaliacao();
+      }, 400);
     } 
-
   }, 1000);
 }
 

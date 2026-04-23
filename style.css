@@ -102,17 +102,14 @@ h3 {
   align-items: center;
   justify-content: center;
 
-  background: rgba(0,0,0,0.25);
+  background: rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(6px);
 
-  z-index: 2000;
-
   opacity: 0;
+  pointer-events: none;
   transition: opacity 0.25s ease;
-}
 
-.modal.show {
-  opacity: 1;
+  z-index: 9999;
 }
 
 .modal.hidden {
@@ -120,48 +117,60 @@ h3 {
   pointer-events: none;
 }
 
-.modal.show .modal-content {
+.modal.active {
   opacity: 1;
+  pointer-events: all;
 }
 
 .modal-content {
   background: white;
+  border-radius: 20px;
   padding: 20px;
-  border-radius: 18px;
   width: 90%;
-  max-width: 320px;
+  max-width: 350px;
 
-  text-align: center;
-
-  transform: scale(0.9);
+  transform: scale(0.8);
   opacity: 0;
-
   transition: all 0.25s ease;
+
+  h3 {
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
 }
 
-.modal.show .modal-content {
+.modal.active .modal-content {
   transform: scale(1);
   opacity: 1;
 }
 
 .stars {
-  margin: 15px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin: 6px 0 14px;
 }
 
 .stars span {
-  font-size: 28px;
+  font-size: 24px;
+  line-height: 1;
   cursor: pointer;
   color: #ccc;
-  transition: transform 0.15s ease, color 0.2s;
+
+  transition: transform 0.18s cubic-bezier(0.25, 0.8, 0.25, 1),
+      color 0.2s ease;
 }
 
 .stars span.active {
   color: #B91928;
-  transform: scale(1.2);
+  transform: scale(1.15);
+  text-shadow: 0 2px 6px rgba(185, 25, 40, 0.25);
 }
 
 .stars span:hover {
-  transform: scale(1.25);
+  transform: scale(1.2);
 }
 
 textarea {
@@ -617,10 +626,6 @@ button:active {
 
 .detalhe {
   margin-top: 10px;
-}
-
-.hidden {
-  display: none;
 }
 
 .empty {
