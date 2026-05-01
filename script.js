@@ -319,7 +319,13 @@ function abrirResultado(url) {
 // DETALHE
 function toggleDetalhe(index) {
   const detalhe = document.getElementById(`detalhe-${index}`);
+  const button = detalhe.nextElementSibling;
+
+  const isHidden = detalhe.classList.contains("hidden");
+
   detalhe.classList.toggle("hidden");
+
+  button.textContent = isHidden ? "Ver menos" : "Ver mais";
 }
 
 // MENSAGEM DE AGENDAMENTO
@@ -339,15 +345,36 @@ let horarioSelecionado = null;
 function gerarHorarios() {
   const container = document.getElementById("horarios");
   container.innerHTML = "";
+  
+  horarioSelecionado = null;
+  
+  const especialidade = document.getElementById("especialidade").value;
+  const data = document.getElementById("data").value;
 
-  const horarios = ["09:00", "10:00", "11:00", "14:00", "15:00", "16:00"];
+  if (!data) return;
 
-  horarios.forEach(h => {
+  const regras = agenda[especialidade];
+  const diaSemana = new Date(data).getDay();
+
+  if (!regras.dias.includes(diaSemana)) {
+    container.innerHTML = "<p>Sem horários disponíveis</p>";
+    return;
+  }
+
+  regras.horarios.forEach(h => {
     const btn = document.createElement("button");
     btn.textContent = h;
     btn.classList.add("horario-btn");
 
+    if (estaOcupado(data, h)) {
+      btn.disabled = true;
+      btn.style.opacity = "0.4";
+      btn.style.cursor = "not-allowed";
+    }
+
     btn.onclick = () => {
+      if (btn.disabled) return;
+
       horarioSelecionado = h;
 
       document.querySelectorAll(".horario-btn").forEach(b => {
@@ -359,18 +386,62 @@ function gerarHorarios() {
 
     container.appendChild(btn);
   });
+
+  const botoes = container.querySelectorAll(".horario-btn");
+  
+  if (botoes.length === 0 || [...botoes].every(btn => btn.disabled)) {
+    container.innerHTML = "<p>Sem horários disponíveis</p>";
+  }
+}
+
+// DADOS MOCKADOS (simulação agendamento)
+const agenda = {
+  "Clínico Geral": {
+    dias: [1, 2, 3, 4, 5], // segunda a sexta
+    horarios: ["09:00", "10:00", "14:00", "15:00"]
+  },
+  "Cardiologia": {
+    dias: [2, 4], // terça e quinta
+    horarios: ["10:00", "11:00"]
+  },
+  "Ortopedia": {
+    dias: [1, 3, 5],
+    horarios: ["09:00", "11:00", "16:00"]
+  },
+  "Dermatologia": {
+    dias: [1, 4],
+    horarios: ["10:00", "14:00"]
+  },
+  "Neurologia": {
+    dias: [3, 5],
+    horarios: ["09:00", "15:00"]
+  },
+  "Endocrinologia": {
+    dias: [2, 4],
+    horarios: ["10:00", "14:00"]
+  },
+};
+
+function estaOcupado(data, hora) {
+  let consultas = JSON.parse(localStorage.getItem("consultas")) || [];
+
+  return consultas.some(c => c.data === data && c.hora === hora);
 }
 
 // AGENDAMENTO
-function agendar() {
-  const button = event.target;
+function agendar(button) {
 
   const especialidade = document.getElementById("especialidade").value;
   const data = document.getElementById("data").value;
   const hora = horarioSelecionado;
 
-  if (!data || !hora) {
-    showToast("Selecione data e horário");
+  if (!data) {
+    showToast("Selecione uma data");
+    return;
+  }
+
+  if (!hora) {
+    showToast("Selecione um horário disponível");
     return;
   }
 
@@ -381,7 +452,8 @@ function agendar() {
       especialidade,
       data,
       hora,
-      confirmada: false
+      confirmada: false,
+      criadaEm: Date.now()
     };
 
     let consultas = JSON.parse(localStorage.getItem("consultas")) || [];
@@ -396,8 +468,9 @@ function agendar() {
     if (consultas.length === 2 && !localStorage.getItem("avaliou")) {
       setTimeout(() => {
         abrirModalAvaliacao();
-      }, 400);
-    } 
+      }, 3000);
+    }
+
   }, 1000);
 }
 
@@ -407,18 +480,19 @@ let consultaNotificadaIndex = null;
 function verificarConsultasProximas() {
   let consultas = JSON.parse(localStorage.getItem("consultas")) || [];
 
-  const agora = new Date();
+  const agora = Date.now();
 
   consultas.forEach((c, index) => {
-    const dataHora = new Date(`${c.data}T${c.hora}`);
+    const diff = (agora - c.criadaEm) / 1000;
 
-    const diff = dataHora - agora;
-    const minutos = diff / 1000 / 60;
-
-    if (minutos > 0 && minutos <= 60 && !c.confirmada && consultaNotificadaIndex === null) {
+    if (diff > 60 && !c.confirmada && !c.notificada) {
       notificarConsulta(index, c);
+
+      consultas[index].notificada = true;
     }
   });
+
+  localStorage.setItem("consultas", JSON.stringify(consultas));
 }
 
 function notificarConsulta(index, consulta) {
@@ -439,6 +513,8 @@ function confirmarConsulta(index) {
   consultas[index].confirmada = true;
 
   localStorage.setItem("consultas", JSON.stringify(consultas));
+
+  consultaNotificadaIndex = null;
 
   showToast("Consulta confirmada");
 }
@@ -533,4 +609,8 @@ lucide.createIcons();
 setTimeout(() => lucide.createIcons(), 0);
 
 //VERIFICAÇÃO AUTOMÁTICA DE CONSULTAS PRÓXIMAS
-setInterval(verificarConsultasProximas, 60000); // a cada 1 min
+setInterval(verificarConsultasProximas, 2000); // a cada 2 segundos
+
+// ATUALIZAÇÃO DE HORÁRIOS AUTOMÁTICA 
+document.getElementById("data").addEventListener("change", gerarHorarios);
+document.getElementById("especialidade").addEventListener("change", gerarHorarios);

@@ -617,6 +617,24 @@ button:active {
   transform: translateX(-50%) translateY(0);
 }
 
+/* BOTÃO AGENDAR NOVA CONSULTA */
+.btn-agendar {
+  margin-top: 15px;
+  margin-bottom: 10px;
+  width: 100%;
+
+  background-color: #B91928;
+  color: white;
+  border: 2px solid #B91928;
+}
+
+.btn-agendar:hover {
+  background: #B91928;
+  color: white;
+  outline: 2px solid #B91928;
+  outline-offset: 3px;
+}  
+
 /* BOTÃO DELETAR CONSULTAS */
 .btn-delete {
   margin-top: 10px;
@@ -634,38 +652,24 @@ button:active {
   p {opacity: 0.6;}
 }
 
-/* BOTÃO VER RESULTADOS */
-.btn-resultados {
-  margin-top: 5px;
-  margin-bottom: 10px;
-
-  background-color: #B91928;
-  color: white;
-  font-size: 15px;
-  padding: 10px;
-  border-radius: 10px;
-  border: 2px solid #B91928;
-}
-
 button:focus {
   outline: 2px solid #B91928;
   outline-offset: 3px;
 }
+  /* BOTÃO VER RESULTADOS */
+  .btn-resultados {
+    margin-top: 5px;
+    margin-bottom: 10px;
+  
+    background-color: #B91928;
+    color: white;
+    font-size: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid #B91928;
+  }
 
-/* BOTÃO AGENDAR NOVA CONSULTA */
-.btn-agendar {
-  margin-top: 15px;
-  margin-bottom: 10px;
-  width: 100%;
-
-  background-color: #B91928;
-  color: white;
-  border: 2px solid #B91928;
-}
-
-.btn-agendar:hover {
-  background: #B91928;
-  color: white;
-  outline: 2px solid #B91928;
-  outline-offset: 3px;
+/* ESCONDER DETALHES DOS EXAMES */
+.hidden {
+  display: none !important;
 }

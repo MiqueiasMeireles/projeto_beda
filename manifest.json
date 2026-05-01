@@ -1,18 +1,19 @@
 {
-  "name": "Hospital Dr.Beda App",
-  "short_name": "Dr.Beda",
+  "name": "Hospital Dr. Beda App",
+  "short_name": "Dr. Beda",
   "start_url": ".",
+  "splash_pages": null,
   "display": "standalone",
   "background_color": "#B91928",
   "theme_color": "#B91928",
   "icons": [
     {
-      "src": "logo_branco_vermelho.png",
+      "src": "logo_inicial.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "logo_branco_vermelho.png",
+      "src": "logo_inicial.png",
       "sizes": "512x512",
       "type": "image/png"
     }
